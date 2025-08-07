@@ -1,0 +1,90 @@
+/* Galaxy Loading Screen */
+.galaxy-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 1s ease-out;
+}
+
+.galaxy-loader.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.galaxy {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin-bottom: 30px;
+}
+
+.galaxy-arms {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at center, transparent 40%, rgba(255,255,255,0.1) 70%),
+        repeating-conic-gradient(
+            from 0deg,
+            transparent 0deg 10deg,
+            rgba(159, 122, 234, 0.5) 10deg 20deg
+        );
+    border-radius: 50%;
+    animation: spin 30s linear infinite;
+}
+
+.galaxy-core {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle at center, #b57edc, #9b59b6);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 30px #b57edc;
+}
+
+.tiara {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 40px;
+    color: gold;
+    text-shadow: 0 0 10px gold;
+    z-index: 2;
+}
+
+.loader-text {
+    color: white;
+    font-size: 24px;
+    margin-top: 20px;
+    font-family: 'Arial', sans-serif;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+    animation: pulse 2s infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 1;
+    }
+}

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes | Lavender Planner</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link rel="stylesheet" href="lavender-planner/css/galaxy.css">
+
+    <style>
+        /* Notes Page Styles */
+.notes-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.notes-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.notes-btn {
+    background: #B57EDC;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.notes-btn:hover {
+    background: #A67C52;
+}
+
+.search-notes {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 6px;
+    padding: 0.3rem 0.6rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.search-notes input {
+    border: none;
+    padding: 0.5rem;
+    outline: none;
+    min-width: 200px;
+}
+
+.search-notes button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #5D3A7D;
+}
+
+.notes-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 992px) {
+    .notes-content {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.notebooks-section, .sticky-notes-section {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 16px rgba(181, 126, 220, 0.1);
+}
+
+.notebooks-section h2, .sticky-notes-section h2 {
+    color: #5D3A7D;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.notebooks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.notebook-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    border-left: 6px solid #B57EDC;
+    cursor: pointer;
+}
+
+.notebook-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(181, 126, 220, 0.2);
+}
+
+.notebook-card.lavender {
+    border-left-color: #B57EDC;
+}
+.notebook-card.pink {
+    border-left-color: #FFD1DC;
+}
+.notebook-card.blue {
+    border-left-color: #A7C7E7;
+}
+.notebook-card.green {
+    border-left-color: #C8E8C8;
+}
+.notebook-card.yellow {
+    border-left-color: #FFD166;
+}
+.notebook-card.purple {
+    border-left-color: #9B59B6;
+}
+
+.notebook-card h3 {
+    margin: 0 0 0.5rem 0;
+    color: #5D3A7D;
+}
+
+.notebook-card .notebook-subject {
+    font-size: 0.8rem;
+    color: #A67C52;
+    margin-bottom: 0.5rem;
+}
+
+.notebook-card .notebook-description {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+.notebook-card .notebook-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #777;
+}
+
+.sticky-notes-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem 0;
+}
+
+.sticky-note {
+    min-height: 200px;
+    padding: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    position: relative;
+    transition: all 0.3s ease;
+    transform: rotate(-2deg);
+    cursor: pointer;
+}
+
+.sticky-note:hover {
+    transform: rotate(0deg) scale(1.05);
+    z-index: 2;
+}
+
+.sticky-note.yellow {
+    background: #FFF9C4;
+    border: 1px solid #FFF59D;
+}
+.sticky-note.pink {
+    background: #FCE4EC;
+    border: 1px solid #F8BBD0;
+}
+.sticky-note.blue {
+    background: #E3F2FD;
+    border: 1px solid #BBDEFB;
+}
+.sticky-note.green {
+    background: #E8F5E9;
+    border: 1px solid #C8E6C9;
+}
+.sticky-note.purple {
+    background: #F3E5F5;
+    border: 1px solid #E1BEE7;
+}
+
+.sticky-note h4 {
+    margin: 0 0 0.5rem 0;
+    border-bottom: 1px dashed rgba(0,0,0,0.1);
+    padding-bottom: 0.5rem;
+}
+
+.sticky-note .note-content {
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+}
+
+.sticky-note .note-date {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    font-size: 0.7rem;
+    color: rgba(0,0,0,0.5);
+}
+
+.sticky-note .pin {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    background: #A67C52;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #777;
+    grid-column: 1 / -1;
+}
+
+.empty-state i {
+    font-size: 2rem;
+    color: #D8BFD8;
+    margin-bottom: 1rem;
+}
+
+.empty-state p {
+    margin: 0;
+}
+    </style>
+</head>
+<body class="notes">
+    <div class="lavender-background"></div>
+    <div class="dark-overlay"></div>
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+    
+    <header>
+        <h1>Study Notes <span class="teddy">🧸</span></h1>
+        <div class="nav-links">
+            <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="calendar.html"><i class="far fa-calendar-alt"></i> Calendar</a>
+            <a href="tasks.html"><i class="fas fa-tasks"></i> Tasks</a>
+            <a href="notes.html" class="active"><i class="fas fa-book"></i> Notes</a>
+        </div>
+    </header>
+    
+    <main class="notes-container">
+        <div class="notes-controls">
+            <button id="add-notebook" class="notes-btn"><i class="fas fa-plus"></i> New Notebook</button>
+            <button id="add-sticky-note" class="notes-btn"><i class="fas fa-sticky-note"></i> New Sticky Note</button>
+            <div class="search-notes">
+                <input type="text" id="search-notes-input" placeholder="Search notes...">
+                <button id="search-notes-btn"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+        
+        <div class="notes-content">
+            <section class="notebooks-section">
+                <h2><i class="fas fa-book"></i> My Notebooks</h2>
+                <div class="notebooks-grid" id="notebooksGrid">
+                    <!-- Notebooks will be loaded here -->
+                </div>
+            </section>
+            
+            <section class="sticky-notes-section">
+                <h2><i class="fas fa-sticky-note"></i> Sticky Notes</h2>
+                <div class="sticky-notes-container" id="stickyNotesContainer">
+                    <!-- Sticky notes will be loaded here -->
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <!-- Notebook Modal -->
+    <div id="notebook-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Create New Notebook</h3>
+            <form id="notebook-form">
+                <div class="form-group">
+                    <label for="notebook-title">Notebook Title*</label>
+                    <input type="text" id="notebook-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="notebook-subject">Subject</label>
+                    <input type="text" id="notebook-subject">
+                </div>
+                <div class="form-group">
+                    <label for="notebook-color">Color*</label>
+                    <select id="notebook-color" required>
+                        <option value="lavender">Lavender</option>
+                        <option value="pink">Pink</option>
+                        <option value="blue">Blue</option>
+                        <option value="green">Green</option>
+                        <option value="yellow">Yellow</option>
+                        <option value="purple">Purple</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="notebook-description">Description (optional)</label>
+                    <textarea id="notebook-description"></textarea>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" id="delete-notebook" class="delete-btn" style="display: none;">Delete Notebook</button>
+                    <button type="submit" class="save-btn">Save Notebook</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Sticky Note Modal -->
+    <div id="sticky-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>New Sticky Note</h3>
+            <form id="sticky-form">
+                <div class="form-group">
+                    <label for="sticky-title">Title (optional)</label>
+                    <input type="text" id="sticky-title">
+                </div>
+                <div class="form-group">
+                    <label for="sticky-content">Content*</label>
+                    <textarea id="sticky-content" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="sticky-color">Color*</label>
+                    <select id="sticky-color" required>
+                        <option value="yellow">Yellow</option>
+                        <option value="pink">Pink</option>
+                        <option value="blue">Blue</option>
+                        <option value="green">Green</option>
+                        <option value="purple">Purple</option>
+                    </select>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" id="delete-sticky" class="delete-btn" style="display: none;">Delete Note</button>
+                    <button type="submit" class="save-btn">Save Note</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="js/notes.js"></script>
+    <script src="js/galaxy.js"></script>
+</body>
+</html>
