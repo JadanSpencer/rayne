@@ -1,5 +1,13 @@
 let events = JSON.parse(localStorage.getItem('calendarEvents')) || [];
 
+const EVENT_TYPES = {
+    CLASS: 'class',
+    ASSIGNMENT: 'assignment',
+    EXAM: 'exam',
+    STUDY: 'study',
+    PERSONAL: 'personal'
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     // Current week dates
     let currentWeekStart = getStartOfWeek(new Date());
@@ -254,6 +262,8 @@ function initTimeDropdowns() {
         const color = document.getElementById('event-color').value;
         const description = document.getElementById('event-description').value.trim();
         const recurring = document.getElementById('event-recurring').value;
+        const eventTypeBtn = document.querySelector('.event-type-btn.active');
+        const eventType = eventTypeBtn ? eventTypeBtn.dataset.type : 'personal';
         
         // Validate inputs
         if (!title || !date || isNaN(startHour) || isNaN(endHour)) {
@@ -278,7 +288,8 @@ function initTimeDropdowns() {
             color,
             description,
             recurring,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            eventType: eventType
         };
         
         // Save or update event
@@ -353,6 +364,16 @@ function addEventToCalendar(event) {
     });
     
     if (!startSlot) return;
+
+    // Add event type class if specified
+    if (event.eventType) {
+        eventElement.classList.add(event.eventType);
+    }
+    
+    // Add priority class if specified
+    if (event.priority) {
+        eventElement.classList.add(`priority-${event.priority}`);
+    }
     
     // Calculate days until event
     const today = new Date();
@@ -430,6 +451,26 @@ function addEventToCalendar(event) {
             });
         });
     }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Add event type buttons functionality
+    initEventTypeSelector();
+    
+    // Add university tool buttons functionality
+    initUniversityTools();
+    
+    // Add quick add button functionality
+    initQuickAddButton();
+    
+    // Add current time indicator
+    addCurrentTimeIndicator();
+    
+    // Update current time indicator periodically
+    setInterval(updateCurrentTimeIndicator, 60000);
+    
+    // Calculate and update semester progress
+    updateSemesterProgress();
 });
 
 // This should be added to your calendar.js or similar file
@@ -511,6 +552,184 @@ function createClouds() {
         cloud.style.animationDelay = `-${Math.random() * 120}s`;
         
         container.appendChild(cloud);
+    }
+}
+
+function initEventTypeSelector() {
+    const eventTypeBtns = document.querySelectorAll('.event-type-btn');
+    const universityFields = document.querySelector('.university-event-fields');
+    
+    eventTypeBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active class from all buttons
+            eventTypeBtns.forEach(b => b.classList.remove('active'));
+            
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // Show university fields for university event types
+            const eventType = this.dataset.type;
+            if (eventType !== 'personal') {
+                universityFields.style.display = 'block';
+            } else {
+                universityFields.style.display = 'none';
+            }
+        });
+    });
+}
+
+// Initialize university tools
+function initUniversityTools() {
+    // Add class button
+    document.getElementById('add-class-btn').addEventListener('click', function() {
+        openEventModalWithType(EVENT_TYPES.CLASS);
+    });
+    
+    // Add assignment button
+    document.getElementById('add-assignment-btn').addEventListener('click', function() {
+        openEventModalWithType(EVENT_TYPES.ASSIGNMENT);
+    });
+    
+    // Add exam button
+    document.getElementById('add-exam-btn').addEventListener('click', function() {
+        openEventModalWithType(EVENT_TYPES.EXAM);
+    });
+    
+    // Study session button
+    document.getElementById('study-session-btn').addEventListener('click', function() {
+        openEventModalWithType(EVENT_TYPES.STUDY);
+    });
+}
+
+// Open modal with specific event type pre-selected
+function openEventModalWithType(eventType) {
+    currentEditingEventId = null;
+    document.getElementById('delete-event').style.display = 'none';
+    
+    // Open modal
+    openEventModal();
+    
+    // Select the event type
+    const eventTypeBtn = document.querySelector(`.event-type-btn[data-type="${eventType}"]`);
+    if (eventTypeBtn) {
+        eventTypeBtn.click();
+    }
+    
+    // Set default title based on event type
+    const titleInput = document.getElementById('event-title');
+    switch(eventType) {
+        case EVENT_TYPES.CLASS:
+            titleInput.value = 'New Class';
+            break;
+        case EVENT_TYPES.ASSIGNMENT:
+            titleInput.value = 'New Assignment';
+            break;
+        case EVENT_TYPES.EXAM:
+            titleInput.value = 'New Exam';
+            break;
+        case EVENT_TYPES.STUDY:
+            titleInput.value = 'Study Session';
+            break;
+    }
+    
+    titleInput.focus();
+    titleInput.select();
+}
+
+// Initialize quick add button
+function initQuickAddButton() {
+    document.getElementById('quick-event-add').addEventListener('click', function() {
+        // Get current date and time for quick event
+        const now = new Date();
+        const currentHour = now.getHours();
+        
+        currentEditingEventId = null;
+        document.getElementById('delete-event').style.display = 'none';
+        
+        // Set default values for quick event
+        document.getElementById('event-date').value = formatDate(now);
+        document.getElementById('event-start').value = currentHour;
+        document.getElementById('event-end').value = (currentHour + 1) % 24;
+        document.getElementById('event-color').value = 'lavender';
+        
+        // Open modal
+        openEventModal();
+        
+        // Focus on title field
+        document.getElementById('event-title').focus();
+    });
+}
+
+// Add current time indicator to calendar
+function addCurrentTimeIndicator() {
+    const timeSlots = document.querySelectorAll('.time-slot');
+    if (timeSlots.length === 0) return;
+    
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const currentDay = now.getDay();
+    
+    // Adjust for Monday-start week (0=Sunday, 1=Monday, etc.)
+    const dayIndex = currentDay === 0 ? 6 : currentDay - 1;
+    
+    // Find the current day column
+    const dayColumns = document.querySelectorAll('.day-column');
+    if (dayIndex >= dayColumns.length) return;
+    
+    const currentDayColumn = dayColumns[dayIndex];
+    
+    // Create time line element
+    const timeLine = document.createElement('div');
+    timeLine.className = 'current-time-line';
+    timeLine.id = 'current-time-line';
+    
+    // Position the time line
+    const minutesFromTop = (currentHour - 5) * 40 + (currentMinute / 60) * 40;
+    timeLine.style.top = `${minutesFromTop}px`;
+    
+    // Add to current day column
+    currentDayColumn.appendChild(timeLine);
+}
+
+function updateCurrentTimeIndicator() {
+    const timeLine = document.getElementById('current-time-line');
+    if (!timeLine) {
+        addCurrentTimeIndicator();
+        return;
+    }
+    
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    
+    // Position the time line
+    const minutesFromTop = (currentHour - 5) * 40 + (currentMinute / 60) * 40;
+    timeLine.style.top = `${minutesFromTop}px`;
+}
+
+// Calculate and update semester progress
+function updateSemesterProgress() {
+    // Example dates - in a real app these would come from user settings
+    const semesterStart = new Date('2024-01-15');
+    const semesterEnd = new Date('2024-05-10');
+    const today = new Date();
+    
+    // Calculate progress percentage
+    const totalDays = (semesterEnd - semesterStart) / (1000 * 60 * 60 * 24);
+    const daysPassed = (today - semesterStart) / (1000 * 60 * 60 * 24);
+    const progressPercent = Math.min(100, Math.max(0, (daysPassed / totalDays) * 100));
+    
+    // Update progress bar
+    const progressFill = document.getElementById('semester-progress-fill');
+    if (progressFill) {
+        progressFill.style.width = `${progressPercent}%`;
+    }
+    
+    // Update progress text
+    const progressText = document.querySelector('.progress-text span:nth-child(2)');
+    if (progressText) {
+        progressText.textContent = `${Math.round(progressPercent)}% Complete`;
     }
 }
 

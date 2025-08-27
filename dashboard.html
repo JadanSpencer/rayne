@@ -17,6 +17,8 @@
             --high-priority: #FF6B6B;
             --medium-priority: #FFD166;
             --low-priority: #06D6A0;
+            --card-shadow: 0 4px 16px rgba(181, 126, 220, 0.1);
+            --card-hover-shadow: 0 8px 24px rgba(181, 126, 220, 0.15);
         }
         
         body {
@@ -64,6 +66,9 @@
             text-decoration: none;
             font-weight: 500;
             transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         
         .nav-links a:hover {
@@ -73,7 +78,7 @@
         
         .container {
             display: grid;
-            grid-template-columns: 250px 1fr;
+            grid-template-columns: 280px 1fr;
             min-height: calc(100vh - 60px);
         }
         
@@ -85,10 +90,13 @@
             top: 60px;
             height: calc(100vh - 60px);
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
         }
         
         .sidebar-section {
-            margin-bottom: 2rem;
+            margin-bottom: 0;
         }
         
         .sidebar h3 {
@@ -149,81 +157,6 @@
             transform: translateY(-2px);
         }
         
-        .mini-calendar {
-            margin-top: 1rem;
-        }
-        
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.8rem;
-        }
-        
-        .calendar-nav {
-            display: flex;
-            gap: 0.3rem;
-        }
-        
-        .calendar-nav button {
-            background: var(--lavender-light);
-            border: none;
-            border-radius: 4px;
-            padding: 0.2rem 0.4rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 0.7rem;
-        }
-        
-        .calendar-nav button:hover {
-            background: var(--lavender-medium);
-        }
-        
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 0.3rem;
-            font-size: 0.8rem;
-        }
-        
-        .calendar-day-header {
-            text-align: center;
-            font-weight: bold;
-            color: var(--lavender-dark);
-            padding: 0.3rem 0;
-            font-size: 0.7rem;
-        }
-        
-        .calendar-day {
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-            font-size: 0.7rem;
-        }
-        
-        .calendar-day:hover {
-            background: var(--lavender-light);
-        }
-        
-        .calendar-day.today {
-            background: var(--lavender-medium);
-            color: white;
-            font-weight: bold;
-        }
-        
-        .calendar-day.has-tasks:after {
-            content: "🧸";
-            position: absolute;
-            bottom: 1px;
-            right: 1px;
-            font-size: 0.6rem;
-        }
-        
         .main-content {
             padding: 1.5rem;
             overflow-y: auto;
@@ -233,21 +166,23 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
+            align-content: start;
         }
         
         .widget {
             background: var(--white);
             border-radius: 12px;
             padding: 1.2rem;
-            box-shadow: 0 4px 16px rgba(181, 126, 220, 0.1);
+            box-shadow: var(--card-shadow);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
+            height: fit-content;
         }
         
         .widget:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 24px rgba(181, 126, 220, 0.15);
+            box-shadow: var(--card-hover-shadow);
         }
         
         .widget:before {
@@ -277,7 +212,7 @@
         
         /* Upcoming Tasks Widget */
         .upcoming-tasks {
-            grid-column: span 2;
+            grid-column: 1 / -1;
         }
         
         .task-list {
@@ -444,7 +379,6 @@
         
         .motivational-quote h2 {
             color: white;
-            border-bottom-color: rgba(255,255,255,0.3);
         }
         
         #motivational-quote {
@@ -558,730 +492,333 @@
             100% { transform: translateY(0) rotate(15deg); }
         }
         
+        /* Countdown Widget */
+        .countdown-widget {
+            min-height: 200px;
+        }
+        
+        .countdown-container {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .countdown-item {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: relative;
+            border-left: 4px solid var(--lavender-dark);
+        }
+        
+        .countdown-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .countdown-title {
+            font-weight: bold;
+            color: var(--lavender-dark);
+            margin: 0;
+        }
+        
+        .delete-countdown {
+            background: none;
+            border: none;
+            color: #777;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+        }
+        
+        .delete-countdown:hover {
+            color: var(--high-priority);
+        }
+        
+        .countdown-timer {
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+        }
+        
+        .countdown-unit {
+            flex: 1;
+        }
+        
+        .countdown-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--lavender-dark);
+        }
+        
+        .countdown-label {
+            font-size: 0.7rem;
+            color: #777;
+            text-transform: uppercase;
+        }
+        
+        .add-countdown-btn {
+            width: 100%;
+            background: var(--lavender-light);
+            border: 1px dashed var(--lavender-medium);
+            color: var(--lavender-dark);
+            padding: 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .add-countdown-btn:hover {
+            background: var(--lavender-medium);
+            color: white;
+        }
+        
+        /* Services Widget Styles */
+        .services-widget {
+            grid-column: 1 / -1;
+        }
+        
+        .services-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .service-preview-item {
+            background: var(--white);
+            border-left: 4px solid var(--lavender-medium);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .service-preview-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(181, 126, 220, 0.2);
+        }
+        
+        .service-preview-item h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+            color: var(--lavender-dark);
+        }
+        
+        .service-preview-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #777;
+            font-size: 0.8rem;
+        }
+        
+        .view-all-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--lavender-dark);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            background: var(--lavender-light);
+            margin-top: 1rem;
+        }
+        
+        .view-all-btn:hover {
+            background: var(--lavender-medium);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        /* Services Carousel Styles */
+        .services-carousel {
+            min-height: 200px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        .service-carousel-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0;
+            transition: all 0.5s ease;
+            transform: translateX(100%);
+        }
+        
+        .service-carousel-item.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .service-carousel-item.leaving {
+            transform: translateX(-100%);
+        }
+        
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .carousel-controls button {
+            background: var(--lavender-light);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--lavender-dark);
+            transition: all 0.2s ease;
+        }
+        
+        .carousel-controls button:hover {
+            background: var(--lavender-medium);
+            color: white;
+        }
+        
+        .carousel-counter {
+            font-size: 0.9rem;
+            color: var(--lavender-dark);
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #777;
+            grid-column: 1 / -1;
+        }
+        
+        .empty-state i {
+            font-size: 2rem;
+            color: var(--lavender-medium);
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .empty-state p {
+            margin: 0;
+        }
+        
+        /* User Welcome */
+        .user-welcome {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            padding: 0.8rem;
+            background: var(--lavender-light);
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        
+        .user-welcome i {
+            color: var(--lavender-dark);
+        }
+        
         /* Responsive Design */
-        @media (max-width: 1024px) {
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 240px 1fr;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+        
+        @media (max-width: 992px) {
             .container {
                 grid-template-columns: 1fr;
             }
             
             .sidebar {
-                display: none; /* Could be replaced with a mobile menu */
+                display: none;
             }
             
-            .upcoming-tasks {
-                grid-column: span 1;
+            .task-list {
+                grid-template-columns: 1fr;
             }
         }
         
         @media (max-width: 768px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-            
             header {
                 flex-direction: column;
-                gap: 0.5rem;
+                gap: 1rem;
                 padding: 1rem;
             }
             
             .nav-links {
-                gap: 1rem;
                 flex-wrap: wrap;
                 justify-content: center;
+                gap: 1rem;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .widget {
+                padding: 1rem;
             }
         }
-
-        /* Countdown Widget */
-.countdown-widget {
-    min-height: 200px;
-}
-
-.countdown-container {
-    display: grid;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.countdown-item {
-    background: var(--white);
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    position: relative;
-    border-left: 4px solid var(--lavender-dark);
-}
-
-.countdown-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-}
-
-.countdown-title {
-    font-weight: bold;
-    color: var(--lavender-dark);
-    margin: 0;
-}
-
-.delete-countdown {
-    background: none;
-    border: none;
-    color: #777;
-    cursor: pointer;
-    font-size: 0.8rem;
-    transition: all 0.2s ease;
-}
-
-.delete-countdown:hover {
-    color: var(--high-priority);
-}
-
-.countdown-timer {
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-}
-
-.countdown-unit {
-    flex: 1;
-}
-
-.countdown-value {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--lavender-dark);
-}
-
-.countdown-label {
-    font-size: 0.7rem;
-    color: #777;
-    text-transform: uppercase;
-}
-
-.add-countdown-btn {
-    width: 100%;
-    background: var(--lavender-light);
-    border: 1px dashed var(--lavender-medium);
-    color: var(--lavender-dark);
-    padding: 0.8rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.add-countdown-btn:hover {
-    background: var(--lavender-medium);
-    color: white;
-}
-
-/* Countdown Form Modal */
-.countdown-form-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-}
-
-.countdown-form-content {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 400px;
-    box-shadow: 0 4px 24px rgba(181, 126, 220, 0.3);
-}
-
-.countdown-form-group {
-    margin-bottom: 1rem;
-}
-
-.countdown-form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: var(--lavender-dark);
-    font-weight: 500;
-}
-
-.countdown-form-group input {
-    width: 100%;
-    padding: 0.7rem;
-    border: 1px solid var(--lavender-medium);
-    border-radius: 6px;
-    font-family: inherit;
-}
-
-.countdown-form-buttons {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-
-.countdown-form-buttons button {
-    flex: 1;
-    padding: 0.8rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.countdown-save-btn {
-    background: var(--lavender-dark);
-    color: white;
-}
-
-.countdown-save-btn:hover {
-    background: var(--lavender-medium);
-}
-
-.countdown-cancel-btn {
-    background: var(--lavender-light);
-    color: var(--lavender-dark);
-}
-
-.countdown-cancel-btn:hover {
-    background: var(--lavender-medium);
-    color: white;
-}
-
-/* Services Widget Styles */
-.services-widget {
-    background: var(--white);
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 16px rgba(181, 126, 220, 0.1);
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.services-widget:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(181, 126, 220, 0.15);
-}
-
-.services-widget:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 6px;
-    background: linear-gradient(90deg, var(--lavender-medium), var(--lavender-dark));
-}
-
-.services-widget h2 {
-    color: var(--lavender-dark);
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.services-widget h2 i {
-    color: var(--teddy-brown);
-    font-size: 1rem;
-}
-
-.services-preview {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-.service-preview-item {
-    background: var(--white);
-    border-left: 4px solid var(--lavender-medium);
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.service-preview-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(181, 126, 220, 0.2);
-}
-
-.service-preview-item h3 {
-    margin: 0 0 0.5rem 0;
-    font-size: 1rem;
-    color: var(--lavender-dark);
-}
-
-.service-preview-meta {
-    display: flex;
-    justify-content: space-between;
-    color: #777;
-    font-size: 0.8rem;
-}
-
-.view-all-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--lavender-dark);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-    background: var(--lavender-light);
-    margin-top: 1rem;
-}
-
-.view-all-btn:hover {
-    background: var(--lavender-medium);
-    color: white;
-    transform: translateX(5px);
-}
-
-/* Services Controls */
-.services-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.search-filter {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.search-filter input,
-.search-filter select {
-    padding: 0.6rem;
-    border: 1px solid var(--lavender-medium);
-    border-radius: 6px;
-    font-family: inherit;
-    background: var(--lavender-light);
-    min-width: 180px;
-    font-size: 0.9rem;
-}
-
-.add-service-btn {
-    background: var(--lavender-dark);
-    color: white;
-    border: none;
-    padding: 0.7rem 1.2rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-}
-
-.add-service-btn:hover {
-    background: var(--lavender-medium);
-    transform: translateY(-2px);
-}
-
-/* Services Container */
-.services-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-}
-
-.service-card {
-    background: var(--white);
-    border-radius: 8px;
-    padding: 1.2rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: all 0.3s ease;
-    border-left: 4px solid var(--lavender-dark);
-    position: relative;
-    overflow: hidden;
-}
-
-.service-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(181, 126, 220, 0.2);
-}
-
-.service-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.8rem;
-}
-
-.service-card h3 {
-    margin: 0;
-    color: var(--lavender-dark);
-    font-size: 1.1rem;
-}
-
-.service-category {
-    font-size: 0.7rem;
-    font-weight: bold;
-    padding: 0.2rem 0.5rem;
-    border-radius: 10px;
-    background-color: rgba(181, 126, 220, 0.1);
-    color: var(--lavender-dark);
-}
-
-.service-location {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.8rem;
-    color: #777;
-    margin-bottom: 0.5rem;
-}
-
-.service-location i {
-    color: var(--lavender-dark);
-}
-
-.service-description {
-    font-size: 0.9rem;
-    color: #555;
-    margin-bottom: 1rem;
-    line-height: 1.4;
-}
-
-.service-hours {
-    font-size: 0.8rem;
-    color: #777;
-    margin-bottom: 0.5rem;
-}
-
-.service-contact {
-    font-size: 0.8rem;
-    color: var(--lavender-dark);
-    margin-bottom: 0.5rem;
-}
-
-.service-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
-    margin-top: 1rem;
-}
-
-.service-actions button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--lavender-dark);
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
-    padding: 0.3rem;
-    border-radius: 4px;
-}
-
-.service-actions button:hover {
-    background: var(--lavender-light);
-    color: var(--lavender-medium);
-    transform: scale(1.1);
-}
-
-/* Category colors */
-.service-card.food {
-    border-left-color: #FF9AA2;
-}
-.service-card.food .service-category {
-    background-color: rgba(255, 154, 162, 0.1);
-    color: #FF5E78;
-}
-
-.service-card.health {
-    border-left-color: #A7C7E7;
-}
-.service-card.health .service-category {
-    background-color: rgba(167, 199, 231, 0.1);
-    color: #5D8CC0;
-}
-
-.service-card.retail {
-    border-left-color: #FFD166;
-}
-.service-card.retail .service-category {
-    background-color: rgba(255, 209, 102, 0.1);
-    color: #CC9E00;
-}
-
-.service-card.academic {
-    border-left-color: #9B59B6;
-}
-.service-card.academic .service-category {
-    background-color: rgba(155, 89, 182, 0.1);
-    color: #8E44AD;
-}
-
-.service-card.recreation {
-    border-left-color: #06D6A0;
-}
-.service-card.recreation .service-category {
-    background-color: rgba(6, 214, 160, 0.1);
-    color: #048A81;
-}
-
-.service-card.other {
-    border-left-color: #B57EDC;
-}
-.service-card.other .service-category {
-    background-color: rgba(181, 126, 220, 0.1);
-    color: #9B59B6;
-}
-
-/* Service Form Modal */
-.service-form-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-}
-
-.service-form-content {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 4px 24px rgba(181, 126, 220, 0.3);
-    animation: modalFadeIn 0.3s ease;
-}
-
-@keyframes modalFadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.service-form-content h3 {
-    color: var(--lavender-dark);
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.service-form-group {
-    margin-bottom: 1.2rem;
-}
-
-.service-form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: var(--lavender-dark);
-    font-weight: 500;
-}
-
-.service-form-group input,
-.service-form-group select,
-.service-form-group textarea {
-    width: 100%;
-    padding: 0.7rem;
-    border: 1px solid var(--lavender-medium);
-    border-radius: 6px;
-    font-family: inherit;
-    font-size: 0.9rem;
-    background: var(--lavender-light);
-    transition: all 0.2s ease;
-}
-
-.service-form-group input:focus,
-.service-form-group select:focus,
-.service-form-group textarea:focus {
-    border-color: var(--lavender-dark);
-    box-shadow: 0 0 0 3px rgba(181, 126, 220, 0.2);
-    outline: none;
-}
-
-.service-form-group textarea {
-    min-height: 80px;
-    resize: vertical;
-}
-
-.service-form-buttons {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-
-.service-form-buttons button {
-    flex: 1;
-    padding: 0.8rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.service-save-btn {
-    background: var(--lavender-dark);
-    color: white;
-}
-
-.service-save-btn:hover {
-    background: var(--lavender-medium);
-}
-
-.service-cancel-btn {
-    background: var(--lavender-light);
-    color: var(--lavender-dark);
-}
-
-.service-cancel-btn:hover {
-    background: var(--lavender-medium);
-    color: white;
-}
-
-/* Empty State */
-.empty-state {
-    text-align: center;
-    padding: 2rem;
-    color: #777;
-    grid-column: 1 / -1;
-}
-
-.empty-state i {
-    font-size: 2rem;
-    color: var(--lavender-medium);
-    margin-bottom: 1rem;
-    display: block;
-}
-
-.empty-state p {
-    margin: 0;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .services-preview,
-    .services-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .services-controls {
-        flex-direction: column;
-    }
-    
-    .search-filter {
-        width: 100%;
-    }
-    
-    .search-filter input,
-    .search-filter select {
-        width: 100%;
-    }
-    
-    .add-service-btn {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .service-form-content {
-        padding: 1.5rem;
-    }
-    
-    .service-form-buttons {
-        flex-direction: column;
-    }
-    
-    .service-form-buttons button {
-        width: 100%;
-    }
-}
-
-/* Services Carousel Styles */
-.services-carousel {
-    min-height: 200px;
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 1rem;
-}
-
-.service-carousel-item {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    opacity: 0;
-    transition: all 0.5s ease;
-    transform: translateX(100%);
-}
-
-.service-carousel-item.active {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.service-carousel-item.leaving {
-    transform: translateX(-100%);
-}
-
-.carousel-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.carousel-controls button {
-    background: var(--lavender-light);
-    border: none;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--lavender-dark);
-    transition: all 0.2s ease;
-}
-
-.carousel-controls button:hover {
-    background: var(--lavender-medium);
-    color: white;
-}
-
-.carousel-counter {
-    font-size: 0.9rem;
-    color: var(--lavender-dark);
-    min-width: 40px;
-    text-align: center;
-}
+        
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.2rem;
+            }
+            
+            .nav-links {
+                gap: 0.8rem;
+            }
+            
+            .nav-links a {
+                font-size: 0.9rem;
+            }
+            
+            .widget h2 {
+                font-size: 1.1rem;
+            }
+            
+            .countdown-timer {
+                flex-wrap: wrap;
+            }
+            
+            .countdown-unit {
+                flex: 0 0 50%;
+                margin-bottom: 0.5rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1318,23 +855,6 @@
             </div>
             
             <div class="sidebar-section">
-                <h3><i class="far fa-calendar-alt"></i> Mini Calendar</h3>
-                <div class="mini-calendar">
-                    <div class="calendar-header">
-                        <span class="current-month" id="currentMonth">November 2023</span>
-                        <div class="calendar-nav">
-                            <button id="prevMonth"><i class="fas fa-chevron-left"></i></button>
-                            <button id="nextMonth"><i class="fas fa-chevron-right"></i></button>
-                        </div>
-                    </div>
-                    
-                    <div class="calendar-grid" id="calendarGrid">
-                        <!-- Calendar will be generated by JavaScript -->
-                    </div>
-                </div>
-            </div>
-            
-            <div class="sidebar-section">
                 <h3><i class="fas fa-cloud-sun"></i> Weather</h3>
                 <div class="weather-widget">
                     <div class="weather-icon" id="weatherIcon">
@@ -1342,6 +862,24 @@
                     </div>
                     <div class="weather-temp" id="weatherTemp">72°F</div>
                     <div class="weather-location">University Campus</div>
+                    <div class="weather-details">
+                        <div class="weather-detail">
+                            <div class="label">Humidity</div>
+                            <div class="value">65%</div>
+                        </div>
+                        <div class="weather-detail">
+                            <div class="label">Wind</div>
+                            <div class="value">5 mph</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3><i class="fas fa-user"></i> User Info</h3>
+                <div class="user-welcome">
+                    <i class="fas fa-user-graduate"></i>
+                    <span id="userWelcome">Preston Hall Resident</span>
                 </div>
             </div>
         </aside>
@@ -1396,7 +934,6 @@
                     </button>
                 </section>
 
-                <!-- Add this to your dashboard-grid section, after the countdown widget -->
                 <section class="widget services-widget">
                     <h2><i class="fas fa-store"></i> Campus Services</h2>
                     <div class="services-carousel" id="servicesCarousel">
@@ -1430,186 +967,72 @@
                 "Even teddy bears need rest - don't forget to sleep!"
             ];
             
-            // Calendar data
-            let currentDate = new Date();
-            let currentMonth = currentDate.getMonth();
-            let currentYear = currentDate.getFullYear();
-            
             // Initialize the dashboard
             function initDashboard() {
                 renderTasks();
-                renderCalendar();
                 renderPerformanceChart();
                 setupEventListeners();
                 startQuoteRotator();
                 setupCountdowns();
-                setupServices();
-                loadServicesPreview();
+                setupServiceCarousel();
+                updateStats();
             }
 
-            // Load services preview
-function loadServicesPreview() {
-    const services = JSON.parse(localStorage.getItem('services')) || [];
-    const previewContainer = document.getElementById('servicesPreview');
-    
-    if (services.length === 0) {
-        previewContainer.innerHTML = `
-            <div class="empty-state">
-                <i class="fas fa-store"></i>
-                <p>No services added yet</p>
-            </div>
-        `;
-        return;
-    }
-    
-    // Show only the first 3 services
-    const servicesToShow = services.slice(0, 3);
-    previewContainer.innerHTML = '';
-    
-    servicesToShow.forEach(service => {
-        const serviceItem = document.createElement('div');
-        serviceItem.className = 'service-preview-item';
-        
-        serviceItem.innerHTML = `
-            <h3>${service.name}</h3>
-            <div class="service-preview-meta">
-                <span>${getCategoryName(service.category)}</span>
-                <span>${getLocationName(service.location)}</span>
-            </div>
-        `;
-        
-        previewContainer.appendChild(serviceItem);
-    });
-}
-
-            
             // Render tasks
-            // In dashboard.html, replace the renderTasks() function with this updated version:
-function renderTasks() {
-    const taskList = document.getElementById('taskList');
-    taskList.innerHTML = '';
-    
-    // Get all tasks from localStorage (not just incomplete ones)
-    const allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    
-    // Filter for incomplete tasks for dashboard display
-    const filteredTasks = allTasks.filter(task => !task.completed);
-    
-    if (filteredTasks.length === 0) {
-        taskList.innerHTML = `
-            <div class="empty-state">
-                <i class="fas fa-check-circle"></i>
-                <p>All caught up! No pending tasks.</p>
-            </div>
-        `;
-        return;
-    }
-    
-    filteredTasks.forEach(task => {
-        const taskCard = document.createElement('div');
-        taskCard.className = `task-card ${task.priority}-priority`;
-        taskCard.dataset.id = task.id;
-        
-        taskCard.innerHTML = `
-            <h3>${task.title}</h3>
-            ${task.description ? `<p class="task-description">${task.description}</p>` : ''}
-            <div class="task-meta">
-                <span>${task.course || 'General'}</span>
-                <span>Due: ${formatDueDate(task.dueDate)}</span>
-            </div>
-            <div class="task-actions">
-                <span class="priority-label">${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)} Priority</span>
-                <button class="complete-btn" title="Mark Complete"><i class="fas fa-check"></i></button>
-            </div>
-        `;
-        
-        taskCard.querySelector('.complete-btn').addEventListener('click', () => {
-            // Find and update the task in the full task list
-            const updatedTasks = allTasks.map(t => 
-                t.id === task.id ? { ...t, completed: true } : t
-            );
-            
-            // Save the updated tasks to localStorage
-            localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-            
-            // Refresh display
-            renderTasks();
-            updateStats();
-        });
-        
-        taskList.appendChild(taskCard);
-    });
-}
-            // Render calendar
-            function renderCalendar() {
-                const calendarGrid = document.getElementById('calendarGrid');
-                const monthYearDisplay = document.getElementById('currentMonth');
+            function renderTasks() {
+                const taskList = document.getElementById('taskList');
+                taskList.innerHTML = '';
                 
-                // Clear previous calendar
-                calendarGrid.innerHTML = '';
+                // Get all tasks from localStorage (not just incomplete ones)
+                const allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
                 
-                // Set month/year display
-                const monthNames = ["January", "February", "March", "April", "May", "June", 
-                                   "July", "August", "September", "October", "November", "December"];
-                monthYearDisplay.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+                // Filter for incomplete tasks for dashboard display
+                const filteredTasks = allTasks.filter(task => !task.completed);
                 
-                // Add day headers
-                const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-                dayNames.forEach(day => {
-                    const dayHeader = document.createElement('div');
-                    dayHeader.className = 'calendar-day-header';
-                    dayHeader.textContent = day;
-                    calendarGrid.appendChild(dayHeader);
+                if (filteredTasks.length === 0) {
+                    taskList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-check-circle"></i>
+                            <p>All caught up! No pending tasks.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                filteredTasks.forEach(task => {
+                    const taskCard = document.createElement('div');
+                    taskCard.className = `task-card ${task.priority}-priority`;
+                    taskCard.dataset.id = task.id;
+                    
+                    taskCard.innerHTML = `
+                        <h3>${task.title}</h3>
+                        ${task.description ? `<p class="task-description">${task.description}</p>` : ''}
+                        <div class="task-meta">
+                            <span>${task.course || 'General'}</span>
+                            <span>Due: ${formatDueDate(task.dueDate)}</span>
+                        </div>
+                        <div class="task-actions">
+                            <span class="priority-label">${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)} Priority</span>
+                            <button class="complete-btn" title="Mark Complete"><i class="fas fa-check"></i></button>
+                        </div>
+                    `;
+                    
+                    taskCard.querySelector('.complete-btn').addEventListener('click', () => {
+                        // Find and update the task in the full task list
+                        const updatedTasks = allTasks.map(t => 
+                            t.id === task.id ? { ...t, completed: true } : t
+                        );
+                        
+                        // Save the updated tasks to localStorage
+                        localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+                        
+                        // Refresh display
+                        renderTasks();
+                        updateStats();
+                    });
+                    
+                    taskList.appendChild(taskCard);
                 });
-                
-                // Get first day of month and total days in month
-                const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-                
-                // Get days from previous month
-                const prevMonthDays = new Date(currentYear, currentMonth, 0).getDate();
-                
-                // Add empty cells for days of previous month
-                for (let i = 0; i < firstDay; i++) {
-                    const day = document.createElement('div');
-                    day.className = 'calendar-day';
-                    day.textContent = prevMonthDays - firstDay + i + 1;
-                    day.style.opacity = '0.3';
-                    calendarGrid.appendChild(day);
-                }
-                
-                // Add days of current month
-                const today = new Date();
-                for (let i = 1; i <= daysInMonth; i++) {
-                    const day = document.createElement('div');
-                    day.className = 'calendar-day';
-                    day.textContent = i;
-                    
-                    // Highlight today
-                    if (i === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
-                        day.classList.add('today');
-                    }
-                    
-                    // Randomly add some teddy bears for demo
-                    if (Math.random() > 0.7) {
-                        day.classList.add('has-tasks');
-                    }
-                    
-                    calendarGrid.appendChild(day);
-                }
-                
-                // Calculate total cells (should be 42 for 6 rows)
-                const totalCells = firstDay + daysInMonth;
-                const remainingCells = totalCells > 35 ? 42 - totalCells : 35 - totalCells;
-                
-                // Add days from next month
-                for (let i = 1; i <= remainingCells; i++) {
-                    const day = document.createElement('div');
-                    day.className = 'calendar-day';
-                    day.textContent = i;
-                    day.style.opacity = '0.3';
-                    calendarGrid.appendChild(day);
-                }
             }
             
             // Render performance chart
@@ -1671,37 +1094,6 @@ function renderTasks() {
                     }
                 });
                 
-                // Calendar navigation
-                document.getElementById('prevMonth').addEventListener('click', function() {
-                    currentMonth--;
-                    if (currentMonth < 0) {
-                        currentMonth = 11;
-                        currentYear--;
-                    }
-                    renderCalendar();
-                });
-                
-                document.getElementById('nextMonth').addEventListener('click', function() {
-                    currentMonth++;
-                    if (currentMonth > 11) {
-                        currentMonth = 0;
-                        currentYear++;
-                    }
-                    renderCalendar();
-                });
-                
-                // Calendar day click
-                document.getElementById('calendarGrid').addEventListener('click', function(e) {
-                    if (e.target.classList.contains('calendar-day')) {
-                        const day = e.target.textContent;
-                        if (e.target.classList.contains('has-tasks')) {
-                            alert(`View tasks for ${monthNames[currentMonth]} ${day}, ${currentYear}`);
-                        } else {
-                            alert(`Add new task for ${monthNames[currentMonth]} ${day}, ${currentYear}`);
-                        }
-                    }
-                });
-                
                 // Quick add form submission
                 document.getElementById('quickAddForm').addEventListener('submit', function(e) {
                     e.preventDefault();
@@ -1753,605 +1145,178 @@ function renderTasks() {
             
             // Update statistics
             function updateStats() {
-    const allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    const totalTasks = allTasks.length;
-    const completedTasks = allTasks.filter(t => t.completed).length;
-    const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
-    
-    document.getElementById('tasksCompleted').textContent = `${completionRate}%`;
-    document.getElementById('upcomingDeadlines').textContent = allTasks.filter(t => !t.completed).length;
-    
-    // Keep random study hours for demo purposes
-    document.getElementById('studyHours').textContent = Math.floor(20 + Math.random() * 10);
-}
-            // Rotate motivational quotes
-            function startQuoteRotator() {
-                const quoteElement = document.getElementById('motivational-quote');
-                let currentQuoteIndex = 0;
+                const allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+                const totalTasks = allTasks.length;
+                const completedTasks = allTasks.filter(t => t.completed).length;
+                const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
                 
-                setInterval(() => {
-                    currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
-                    quoteElement.textContent = quotes[currentQuoteIndex];
-                }, 8000);
+                document.getElementById('tasksCompleted').textContent = `${completionRate}%`;
+                document.getElementById('upcomingDeadlines').textContent = allTasks.filter(t => !t.completed).length;
             }
             
-            // Countdown functionality
-function setupCountdowns() {
-    // Load countdowns from localStorage
-    const countdowns = JSON.parse(localStorage.getItem('countdowns')) || [];
-    
-    // Render existing countdowns
-    renderCountdowns();
-    
-    // Set up event listeners
-    document.getElementById('addCountdownBtn').addEventListener('click', showCountdownForm);
-    
-    // Start countdown timers
-    startCountdownTimers();
-}
-
-function renderCountdowns() {
-    const container = document.getElementById('countdownContainer');
-    container.innerHTML = '';
-    
-    const countdowns = JSON.parse(localStorage.getItem('countdowns')) || [];
-    
-    if (countdowns.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <i class="far fa-clock"></i>
-                <p>No countdowns yet. Add your first one!</p>
-            </div>
-        `;
-        return;
-    }
-    
-    countdowns.forEach((countdown, index) => {
-        const countdownElement = document.createElement('div');
-        countdownElement.className = 'countdown-item';
-        countdownElement.dataset.index = index;
-        
-        countdownElement.innerHTML = `
-            <div class="countdown-header">
-                <h3 class="countdown-title">${countdown.title}</h3>
-                <button class="delete-countdown" data-index="${index}">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-            <div class="countdown-timer" id="countdown-${index}">
-                <div class="countdown-unit">
-                    <div class="countdown-value" id="days-${index}">00</div>
-                    <div class="countdown-label">Days</div>
-                </div>
-                <div class="countdown-unit">
-                    <div class="countdown-value" id="hours-${index}">00</div>
-                    <div class="countdown-label">Hours</div>
-                </div>
-                <div class="countdown-unit">
-                    <div class="countdown-value" id="minutes-${index}">00</div>
-                    <div class="countdown-label">Minutes</div>
-                </div>
-                <div class="countdown-unit">
-                    <div class="countdown-value" id="seconds-${index}">00</div>
-                    <div class="countdown-label">Seconds</div>
-                </div>
-            </div>
-        `;
-        
-        container.appendChild(countdownElement);
-    });
-    
-    // Add delete event listeners
-    document.querySelectorAll('.delete-countdown').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const index = parseInt(this.dataset.index);
-            deleteCountdown(index);
-        });
-    });
-}
-
-function showCountdownForm() {
-    const modal = document.createElement('div');
-    modal.className = 'countdown-form-modal';
-    modal.id = 'countdownFormModal';
-    
-    modal.innerHTML = `
-        <div class="countdown-form-content">
-            <h3>Add New Countdown</h3>
-            <div class="countdown-form-group">
-                <label for="countdownTitle">Event Name</label>
-                <input type="text" id="countdownTitle" placeholder="e.g., Final Exams" required>
-            </div>
-            <div class="countdown-form-group">
-                <label for="countdownDate">Event Date & Time</label>
-                <input type="datetime-local" id="countdownDate" required>
-            </div>
-            <div class="countdown-form-buttons">
-                <button class="countdown-cancel-btn" id="countdownCancelBtn">Cancel</button>
-                <button class="countdown-save-btn" id="countdownSaveBtn">Save</button>
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    modal.style.display = 'flex';
-    
-    // Set min date to now
-    const now = new Date();
-    const timezoneOffset = now.getTimezoneOffset() * 60000;
-    const localISOTime = (new Date(now - timezoneOffset)).toISOString().slice(0, 16);
-    document.getElementById('countdownDate').min = localISOTime;
-    
-    // Event listeners
-    document.getElementById('countdownCancelBtn').addEventListener('click', () => {
-        modal.remove();
-    });
-    
-    document.getElementById('countdownSaveBtn').addEventListener('click', saveCountdown);
-}
-
-function saveCountdown() {
-    const title = document.getElementById('countdownTitle').value.trim();
-    const dateTime = document.getElementById('countdownDate').value;
-    
-    if (!title || !dateTime) {
-        alert('Please fill in all fields');
-        return;
-    }
-    
-    const countdown = {
-        title: title,
-        date: dateTime
-    };
-    
-    const countdowns = JSON.parse(localStorage.getItem('countdowns')) || [];
-    
-    // Limit to 3 countdowns
-    if (countdowns.length >= 3) {
-        alert('You can only have up to 3 countdowns at a time. Please delete one to add another.');
-        return;
-    }
-    
-    countdowns.push(countdown);
-    localStorage.setItem('countdowns', JSON.stringify(countdowns));
-    
-    document.getElementById('countdownFormModal').remove();
-    renderCountdowns();
-    startCountdownTimers();
-}
-
-function deleteCountdown(index) {
-    const countdowns = JSON.parse(localStorage.getItem('countdowns')) || [];
-    countdowns.splice(index, 1);
-    localStorage.setItem('countdowns', JSON.stringify(countdowns));
-    renderCountdowns();
-}
-
-function startCountdownTimers() {
-    const countdowns = JSON.parse(localStorage.getItem('countdowns')) || [];
-    
-    // Clear any existing intervals
-    if (window.countdownIntervals) {
-        window.countdownIntervals.forEach(interval => clearInterval(interval));
-    }
-    
-    window.countdownIntervals = [];
-    
-    countdowns.forEach((countdown, index) => {
-        const interval = setInterval(() => {
-            updateCountdown(index, countdown.date);
-        }, 1000);
-        
-        window.countdownIntervals.push(interval);
-        
-        // Initial update
-        updateCountdown(index, countdown.date);
-    });
-}
-
-function updateCountdown(index, endDateString) {
-    const endDate = new Date(endDateString);
-    const now = new Date();
-    
-    const diff = endDate - now;
-    
-    if (diff <= 0) {
-        // Countdown has ended
-        document.getElementById(`days-${index}`).textContent = '00';
-        document.getElementById(`hours-${index}`).textContent = '00';
-        document.getElementById(`minutes-${index}`).textContent = '00';
-        document.getElementById(`seconds-${index}`).textContent = '00';
-        return;
-    }
-    
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    
-    document.getElementById(`days-${index}`).textContent = days.toString().padStart(2, '0');
-    document.getElementById(`hours-${index}`).textContent = hours.toString().padStart(2, '0');
-    document.getElementById(`minutes-${index}`).textContent = minutes.toString().padStart(2, '0');
-    document.getElementById(`seconds-${index}`).textContent = seconds.toString().padStart(2, '0');
-}
+            // Motivational quote rotator
+            function startQuoteRotator() {
+                const quoteElement = document.getElementById('motivational-quote');
+                let quoteIndex = 0;
+                
+                setInterval(() => {
+                    quoteIndex = (quoteIndex + 1) % quotes.length;
+                    quoteElement.style.opacity = 0;
+                    
+                    setTimeout(() => {
+                        quoteElement.textContent = quotes[quoteIndex];
+                        quoteElement.style.opacity = 1;
+                    }, 500);
+                }, 5000);
+            }
+            
+            // Setup countdowns
+            function setupCountdowns() {
+                const countdownContainer = document.getElementById('countdownContainer');
+                const addCountdownBtn = document.getElementById('addCountdownBtn');
+                
+                // Sample countdowns
+                const countdowns = [
+                    { id: 1, title: "Finals Week", date: "2023-12-15" },
+                    { id: 2, title: "Spring Break", date: "2024-03-10" }
+                ];
+                
+                // Render countdowns
+                function renderCountdowns() {
+                    countdownContainer.innerHTML = '';
+                    
+                    countdowns.forEach(countdown => {
+                        const countdownElement = document.createElement('div');
+                        countdownElement.className = 'countdown-item';
+                        countdownElement.dataset.id = countdown.id;
+                        
+                        const daysLeft = calculateDaysLeft(countdown.date);
+                        
+                        countdownElement.innerHTML = `
+                            <div class="countdown-header">
+                                <h3 class="countdown-title">${countdown.title}</h3>
+                                <button class="delete-countdown"><i class="fas fa-times"></i></button>
+                            </div>
+                            <div class="countdown-timer">
+                                <div class="countdown-unit">
+                                    <div class="countdown-value">${daysLeft}</div>
+                                    <div class="countdown-label">Days</div>
+                                </div>
+                                <div class="countdown-unit">
+                                    <div class="countdown-value">${Math.floor(daysLeft * 24 % 24)}</div>
+                                    <div class="countdown-label">Hours</div>
+                                </div>
+                                <div class="countdown-unit">
+                                    <div class="countdown-value">${Math.floor(daysLeft * 24 * 60 % 60)}</div>
+                                    <div class="countdown-label">Minutes</div>
+                                </div>
+                                <div class="countdown-unit">
+                                    <div class="countdown-value">${Math.floor(daysLeft * 24 * 60 * 60 % 60)}</div>
+                                    <div class="countdown-label">Seconds</div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        countdownContainer.appendChild(countdownElement);
+                    });
+                }
+                
+                // Calculate days left
+                function calculateDaysLeft(targetDate) {
+                    const now = new Date();
+                    const target = new Date(targetDate);
+                    const diff = target.getTime() - now.getTime();
+                    return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+                }
+                
+                // Add countdown button
+                addCountdownBtn.addEventListener('click', () => {
+                    const title = prompt("Enter countdown title:");
+                    if (!title) return;
+                    
+                    const date = prompt("Enter date (YYYY-MM-DD):");
+                    if (!date) return;
+                    
+                    const newCountdown = {
+                        id: Date.now(),
+                        title,
+                        date
+                    };
+                    
+                    countdowns.push(newCountdown);
+                    renderCountdowns();
+                });
+                
+                // Initial render
+                renderCountdowns();
+                
+                // Update countdowns every minute
+                setInterval(renderCountdowns, 60000);
+            }
+            
+            // Setup service carousel
+            function setupServiceCarousel() {
+                const services = [
+                    { 
+                        name: "Dining Hall Hours", 
+                        description: "Monday-Friday: 7am-9pm, Weekends: 9am-8pm",
+                        icon: "fas fa-utensils"
+                    },
+                    { 
+                        name: "Library Hours", 
+                        description: "Open 24/7 during finals week. Regular hours: 8am-11pm",
+                        icon: "fas fa-book"
+                    },
+                    { 
+                        name: "Health Center", 
+                        description: "Monday-Friday: 9am-5pm. Emergency services available 24/7",
+                        icon: "fas fa-first-aid"
+                    }
+                ];
+                
+                const carousel = document.getElementById('servicesCarousel');
+                const prevBtn = document.querySelector('.carousel-prev');
+                const nextBtn = document.querySelector('.carousel-next');
+                const counter = document.querySelector('.carousel-counter');
+                
+                let currentIndex = 0;
+                
+                function renderService(index) {
+                    const service = services[index];
+                    
+                    carousel.innerHTML = `
+                        <div class="service-carousel-item active">
+                            <div class="service-preview-item">
+                                <h3><i class="${service.icon}"></i> ${service.name}</h3>
+                                <p>${service.description}</p>
+                                <div class="service-preview-meta">
+                                    <span>Campus Service</span>
+                                    <span><i class="fas fa-info-circle"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    counter.textContent = `${index + 1}/${services.length}`;
+                }
+                
+                prevBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex - 1 + services.length) % services.length;
+                    renderService(currentIndex);
+                });
+                
+                nextBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex + 1) % services.length;
+                    renderService(currentIndex);
+                });
+                
+                // Initial render
+                renderService(currentIndex);
+            }
+            
             // Initialize the dashboard
             initDashboard();
         });
-
-
-// Services functionality
-function setupServices() {
-    // Load services from localStorage
-    setupServiceCarousel();
-    
-    // Set up event listeners
-    document.getElementById('addServiceBtn').addEventListener('click', showServiceForm);
-    document.getElementById('serviceSearch').addEventListener('input', filterServices);
-    document.getElementById('serviceCategoryFilter').addEventListener('change', filterServices);
-    document.getElementById('serviceLocationFilter').addEventListener('change', filterServices);
-}
-
-function renderServices() {
-    const container = document.getElementById('servicesContainer');
-    container.innerHTML = '';
-    
-    const services = JSON.parse(localStorage.getItem('services')) || [];
-    
-    if (services.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state" style="grid-column: 1 / -1">
-                <i class="fas fa-store"></i>
-                <p>No services added yet. Add your first one!</p>
-            </div>
-        `;
-        return;
-    }
-    
-    services.forEach((service, index) => {
-        const serviceCard = document.createElement('div');
-        serviceCard.className = `service-card ${service.category}`;
-        serviceCard.dataset.index = index;
-        
-        serviceCard.innerHTML = `
-            <div class="service-card-header">
-                <h3>${service.name}</h3>
-                <span class="service-category">${getCategoryName(service.category)}</span>
-            </div>
-            <div class="service-location">
-                <i class="fas fa-map-marker-alt"></i>
-                ${getLocationName(service.location)}
-            </div>
-            ${service.description ? `<div class="service-description">${service.description}</div>` : ''}
-            ${service.hours ? `<div class="service-hours"><strong>Hours:</strong> ${service.hours}</div>` : ''}
-            ${service.contact ? `<div class="service-contact"><strong>Contact:</strong> ${service.contact}</div>` : ''}
-            <div class="service-actions">
-                <button class="edit-service" data-index="${index}">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <button class="delete-service" data-index="${index}">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `;
-        
-        container.appendChild(serviceCard);
-    });
-    
-    // Add event listeners to action buttons
-    document.querySelectorAll('.edit-service').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const index = parseInt(this.dataset.index);
-            editService(index);
-        });
-    });
-    
-    document.querySelectorAll('.delete-service').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const index = parseInt(this.dataset.index);
-            deleteService(index);
-        });
-    });
-}
-
-function filterServices() {
-    const searchTerm = document.getElementById('serviceSearch').value.toLowerCase();
-    const categoryFilter = document.getElementById('serviceCategoryFilter').value;
-    const locationFilter = document.getElementById('serviceLocationFilter').value;
-    
-    const services = JSON.parse(localStorage.getItem('services')) || [];
-    
-    const filteredServices = services.filter(service => {
-        const matchesSearch = service.name.toLowerCase().includes(searchTerm) || 
-                             (service.description && service.description.toLowerCase().includes(searchTerm));
-        const matchesCategory = !categoryFilter || service.category === categoryFilter;
-        const matchesLocation = !locationFilter || service.location === locationFilter;
-        
-        return matchesSearch && matchesCategory && matchesLocation;
-    });
-    
-    // Temporarily store filtered services to render
-    localStorage.setItem('filteredServices', JSON.stringify(filteredServices));
-    
-    // Render filtered services
-    if (filteredServices.length === 0) {
-        document.getElementById('servicesContainer').innerHTML = `
-            <div class="empty-state" style="grid-column: 1 / -1">
-                <i class="fas fa-search"></i>
-                <p>No services match your filters</p>
-            </div>
-        `;
-    } else {
-        renderServices();
-    }
-}
-
-function showServiceForm(editIndex = null) {
-    const modal = document.createElement('div');
-    modal.className = 'service-form-modal';
-    modal.id = 'serviceFormModal';
-    
-    const isEditing = editIndex !== null;
-    const services = JSON.parse(localStorage.getItem('services')) || [];
-    const service = isEditing ? services[editIndex] : null;
-    
-    modal.innerHTML = `
-        <div class="service-form-content">
-            <h3>${isEditing ? 'Edit Service' : 'Add New Service'}</h3>
-            <div class="service-form-group">
-                <label for="serviceName">Service Name</label>
-                <input type="text" id="serviceName" placeholder="e.g., Campus Barber" value="${service ? service.name : ''}" required>
-            </div>
-            <div class="service-form-group">
-                <label for="serviceCategory">Category</label>
-                <select id="serviceCategory" required>
-                    <option value="">Select a category</option>
-                    <option value="food" ${service && service.category === 'food' ? 'selected' : ''}>Food & Dining</option>
-                    <option value="health" ${service && service.category === 'health' ? 'selected' : ''}>Health & Wellness</option>
-                    <option value="retail" ${service && service.category === 'retail' ? 'selected' : ''}>Retail</option>
-                    <option value="academic" ${service && service.category === 'academic' ? 'selected' : ''}>Academic Services</option>
-                    <option value="recreation" ${service && service.category === 'recreation' ? 'selected' : ''}>Recreation</option>
-                    <option value="other" ${service && service.category === 'other' ? 'selected' : ''}>Other</option>
-                </select>
-            </div>
-            <div class="service-form-group">
-                <label for="serviceLocation">Location</label>
-                <select id="serviceLocation" required>
-                    <option value="">Select a location</option>
-                    <option value="main-hall" ${service && service.location === 'main-hall' ? 'selected' : ''}>Main Hall</option>
-                    <option value="north-hall" ${service && service.location === 'north-hall' ? 'selected' : ''}>North Hall</option>
-                    <option value="south-hall" ${service && service.location === 'south-hall' ? 'selected' : ''}>South Hall</option>
-                    <option value="east-hall" ${service && service.location === 'east-hall' ? 'selected' : ''}>East Hall</option>
-                    <option value="west-hall" ${service && service.location === 'west-hall' ? 'selected' : ''}>West Hall</option>
-                    <option value="student-center" ${service && service.location === 'student-center' ? 'selected' : ''}>Student Center</option>
-                    <option value="library" ${service && service.location === 'library' ? 'selected' : ''}>Library</option>
-                    <option value="off-campus" ${service && service.location === 'off-campus' ? 'selected' : ''}>Off Campus</option>
-                </select>
-            </div>
-            <div class="service-form-group">
-                <label for="serviceDescription">Description (Optional)</label>
-                <textarea id="serviceDescription" placeholder="Details about the service...">${service ? service.description || '' : ''}</textarea>
-            </div>
-            <div class="service-form-group">
-                <label for="serviceHours">Hours (Optional)</label>
-                <input type="text" id="serviceHours" placeholder="e.g., Mon-Fri 9am-5pm" value="${service ? service.hours || '' : ''}">
-            </div>
-            <div class="service-form-group">
-                <label for="serviceContact">Contact Info (Optional)</label>
-                <input type="text" id="serviceContact" placeholder="e.g., Phone, Email, or Room Number" value="${service ? service.contact || '' : ''}">
-            </div>
-            <div class="service-form-buttons">
-                <button class="service-cancel-btn" id="serviceCancelBtn">Cancel</button>
-                <button class="service-save-btn" id="serviceSaveBtn">${isEditing ? 'Update' : 'Save'}</button>
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    modal.style.display = 'flex';
-    
-    // Event listeners
-    document.getElementById('serviceCancelBtn').addEventListener('click', () => {
-        modal.remove();
-    });
-    
-    document.getElementById('serviceSaveBtn').addEventListener('click', () => {
-        saveService(editIndex);
-    });
-}
-
-function saveService(editIndex = null) {
-    const name = document.getElementById('serviceName').value.trim();
-    const category = document.getElementById('serviceCategory').value;
-    const location = document.getElementById('serviceLocation').value;
-    const description = document.getElementById('serviceDescription').value.trim();
-    const hours = document.getElementById('serviceHours').value.trim();
-    const contact = document.getElementById('serviceContact').value.trim();
-    
-    if (!name || !category || !location) {
-        alert('Please fill in all required fields');
-        return;
-    }
-    
-    const service = {
-        name,
-        category,
-        location,
-        description: description || null,
-        hours: hours || null,
-        contact: contact || null,
-        createdAt: new Date().toISOString()
-    };
-    
-    const services = JSON.parse(localStorage.getItem('services')) || [];
-    
-    if (editIndex !== null) {
-        // Editing existing service
-        services[editIndex] = service;
-    } else {
-        // Adding new service
-        services.push(service);
-    }
-    
-    localStorage.setItem('services', JSON.stringify(services));
-    document.getElementById('serviceFormModal').remove();
-    renderServices();
-}
-
-function editService(index) {
-    showServiceForm(index);
-}
-
-function deleteService(index) {
-    if (!confirm('Are you sure you want to delete this service?')) {
-        return;
-    }
-    
-    const services = JSON.parse(localStorage.getItem('services')) || [];
-    services.splice(index, 1);
-    localStorage.setItem('services', JSON.stringify(services));
-    renderServices();
-}
-
-function getCategoryName(category) {
-    const categories = {
-        'food': 'Food & Dining',
-        'health': 'Health & Wellness',
-        'retail': 'Retail',
-        'academic': 'Academic Services',
-        'recreation': 'Recreation',
-        'other': 'Other'
-    };
-    return categories[category] || 'Unknown';
-}
-
-function getLocationName(location) {
-    const locations = {
-        'main-hall': 'Main Hall',
-        'north-hall': 'North Hall',
-        'south-hall': 'South Hall',
-        'east-hall': 'East Hall',
-        'west-hall': 'West Hall',
-        'student-center': 'Student Center',
-        'library': 'Library',
-        'off-campus': 'Off Campus'
-    };
-    return locations[location] || 'Unknown';
-}
-
-function setupServiceCarousel() {
-    const services = JSON.parse(localStorage.getItem('services')) || [];
-    const carousel = document.getElementById('servicesCarousel');
-    const counter = document.querySelector('.carousel-counter');
-    
-    if (services.length === 0) {
-        carousel.innerHTML = `
-            <div class="empty-state">
-                <i class="fas fa-store"></i>
-                <p>No services added yet</p>
-            </div>
-        `;
-        document.querySelector('.carousel-controls').style.display = 'none';
-        return;
-    }
-    
-    // Clear existing items
-    carousel.innerHTML = '';
-    
-    // Create carousel items
-    services.forEach((service, index) => {
-        const item = document.createElement('div');
-        item.className = 'service-carousel-item';
-        item.dataset.index = index;
-        
-        item.innerHTML = `
-            <div class="service-card ${service.category}">
-                <div class="service-card-header">
-                    <h3>${service.name}</h3>
-                    <span class="service-category">${getCategoryName(service.category)}</span>
-                </div>
-                <div class="service-location">
-                    <i class="fas fa-map-marker-alt"></i>
-                    ${getLocationName(service.location)}
-                </div>
-                ${service.description ? `<div class="service-description">${service.description}</div>` : ''}
-            </div>
-        `;
-        
-        carousel.appendChild(item);
-    });
-    
-    // Show first item
-    const items = document.querySelectorAll('.service-carousel-item');
-    if (items.length > 0) {
-        items[0].classList.add('active');
-        updateCounter(0, items.length);
-    }
-    
-    // Set up navigation
-    document.querySelector('.carousel-prev').addEventListener('click', () => {
-        navigateCarousel(-1);
-    });
-    
-    document.querySelector('.carousel-next').addEventListener('click', () => {
-        navigateCarousel(1);
-    });
-    
-    // Auto-rotate every 5 seconds
-    let autoRotate = setInterval(() => {
-        navigateCarousel(1);
-    }, 5000);
-    
-    // Pause on hover
-    carousel.addEventListener('mouseenter', () => {
-        clearInterval(autoRotate);
-    });
-    
-    carousel.addEventListener('mouseleave', () => {
-        autoRotate = setInterval(() => {
-            navigateCarousel(1);
-        }, 5000);
-    });
-}
-
-function navigateCarousel(direction) {
-    const items = document.querySelectorAll('.service-carousel-item');
-    if (items.length <= 1) return;
-    
-    const currentIndex = Array.from(items).findIndex(item => 
-        item.classList.contains('active')
-    );
-    
-    let nextIndex = currentIndex + direction;
-    
-    // Wrap around
-    if (nextIndex < 0) {
-        nextIndex = items.length - 1;
-    } else if (nextIndex >= items.length) {
-        nextIndex = 0;
-    }
-    
-    // Transition out current item
-    items[currentIndex].classList.remove('active');
-    items[currentIndex].classList.add('leaving');
-    
-    // Transition in next item
-    items[nextIndex].classList.add('active');
-    
-    // Reset classes after transition
-    setTimeout(() => {
-        items[currentIndex].classList.remove('leaving');
-    }, 500);
-    
-    // Update counter
-    updateCounter(nextIndex, items.length);
-}
-
-function updateCounter(currentIndex, total) {
-    document.querySelector('.carousel-counter').textContent = 
-        `${currentIndex + 1}/${total}`;
-}
     </script>
-
-    <script src="js/galaxy.js"></script>
 </body>
 </html>

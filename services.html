@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Services | Lavender Planner</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-        <link rel="stylesheet" href="lavender-planner/css/galaxy.css">
-
+    <link rel="stylesheet" href="lavender-planner/css/galaxy.css">
     <style>
         :root {
             --lavender-light: #F5F0FF;
@@ -18,6 +17,7 @@
             --high-priority: #FF6B6B;
             --medium-priority: #FFD166;
             --low-priority: #06D6A0;
+            --success: #4CAF50;
         }
         
         body {
@@ -104,6 +104,14 @@
             transform: translateY(-2px);
         }
         
+        .btn-success {
+            background: var(--success);
+        }
+        
+        .btn-success:hover {
+            background: #3d8b40;
+        }
+        
         .services-controls {
             display: flex;
             gap: 1rem;
@@ -145,6 +153,7 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
         
         .service-card:hover {
@@ -245,6 +254,22 @@
             color: var(--high-priority);
         }
         
+        .order-btn {
+            background: var(--success);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-top: 1rem;
+            width: 100%;
+            text-align: center;
+            display: block;
+        }
+        
+        .order-btn:hover {
+            background: #3d8b40;
+        }
+        
         /* Modal styles */
         .modal {
             display: none;
@@ -257,6 +282,7 @@
             z-index: 1000;
             align-items: center;
             justify-content: center;
+            overflow-y: auto;
         }
         
         .modal-content {
@@ -264,8 +290,10 @@
             padding: 2rem;
             border-radius: 12px;
             width: 90%;
-            max-width: 500px;
+            max-width: 800px;
             box-shadow: 0 4px 24px rgba(181, 126, 220, 0.3);
+            max-height: 90vh;
+            overflow-y: auto;
         }
         
         .modal-header {
@@ -337,6 +365,111 @@
             color: #777;
         }
         
+        /* Service Detail Page Styles */
+        .service-detail-page {
+            display: none;
+            padding: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .back-btn {
+            background: var(--lavender-light);
+            color: var(--lavender-dark);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .service-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+        
+        .service-detail-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .service-info {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px rgba(181, 126, 220, 0.1);
+        }
+        
+        .service-menu {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px rgba(181, 126, 220, 0.1);
+        }
+        
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .add-to-cart {
+            background: var(--lavender-dark);
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .cart-section {
+            margin-top: 2rem;
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px rgba(181, 126, 220, 0.1);
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--lavender-medium);
+        }
+        
+        .checkout-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 1rem;
+            width: 100%;
+        }
+        
         @media (max-width: 768px) {
             .services-controls {
                 flex-direction: column;
@@ -356,24 +489,28 @@
                 flex-wrap: wrap;
                 justify-content: center;
             }
+            
+            .service-detail-content {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Campus Services</h1>
+        <h1>Campus Services Mall</h1>
         <div class="nav-links">
             <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
             <a href="calendar.html"><i class="far fa-calendar-alt"></i> Calendar</a>
             <a href="tasks.html"><i class="fas fa-tasks"></i> Tasks</a>
             <a href="notes.html"><i class="fas fa-book"></i> Notes</a>
-            <a href="services.html" class="active"><i class="fas fa-store"></i> Services</a>
+            <a href="services.html" class="active"><i class="fas fa-store"></i> Services Mall</a>
         </div>
     </header>
     
-    <div class="container">
+    <div class="container" id="mainContainer">
         <div class="services-header">
-            <h2><i class="fas fa-store"></i> Campus Services Directory</h2>
+            <h2><i class="fas fa-store"></i> Campus Services Mall</h2>
             <button class="btn" id="addServiceBtn"><i class="fas fa-plus"></i> Add Service</button>
         </div>
         
@@ -405,6 +542,58 @@
         
         <div class="services-grid" id="servicesContainer">
             <!-- Services will be loaded here -->
+        </div>
+    </div>
+    
+    <!-- Service Detail Page (Hidden by default) -->
+    <div class="service-detail-page" id="serviceDetailPage">
+        <button class="back-btn" id="backToList"><i class="fas fa-arrow-left"></i> Back to Services</button>
+        
+        <div class="service-detail-header">
+            <h2 id="detailServiceName">Service Name</h2>
+            <span class="service-category" id="detailServiceCategory">Category</span>
+        </div>
+        
+        <div class="service-detail-content">
+            <div class="service-info">
+                <h3>Service Information</h3>
+                <div class="service-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span id="detailServiceLocation">Location</span>
+                </div>
+                <div class="service-description" id="detailServiceDescription">
+                    Service description will appear here.
+                </div>
+                <div class="service-details">
+                    <div class="service-detail" id="detailServiceHours">
+                        <i class="far fa-clock"></i>
+                        <span>Hours: Not specified</span>
+                    </div>
+                    <div class="service-detail" id="detailServiceContact">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>Contact: Not specified</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="service-menu">
+                <h3>Menu / Offerings</h3>
+                <div id="serviceMenuItems">
+                    <!-- Menu items will be loaded here -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="cart-section">
+            <h3>Your Order</h3>
+            <div id="cartItems">
+                <!-- Cart items will be loaded here -->
+            </div>
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
         </div>
     </div>
     
@@ -467,6 +656,12 @@
                     <input type="text" id="serviceContact" placeholder="e.g., Phone, Email, or Room Number">
                 </div>
                 
+                <div class="form-group">
+                    <label for="serviceMenu">Menu Items (JSON format)</label>
+                    <textarea id="serviceMenu" placeholder='[{"name":"Item 1","price":10.99},{"name":"Item 2","price":8.99}]'></textarea>
+                    <small>Enter menu items in JSON format with name and price for each item</small>
+                </div>
+                
                 <div class="form-actions">
                     <button type="button" class="btn" id="cancelBtn" style="background: var(--lavender-light); color: var(--lavender-dark);">Cancel</button>
                     <button type="submit" class="btn" id="saveBtn">Save Service</button>
@@ -476,13 +671,13 @@
     </div>
 
     <div class="galaxy-loader">
-    <div class="galaxy">
-        <div class="tiara">👑</div>
-        <div class="galaxy-arms"></div>
-        <div class="galaxy-core"></div>
+        <div class="galaxy">
+            <div class="tiara">👑</div>
+            <div class="galaxy-arms"></div>
+            <div class="galaxy-core"></div>
+        </div>
+        <div class="loader-text">Lavender Planner</div>
     </div>
-    <div class="loader-text">Lavender Planner</div>
-</div>
     <script src="js/galaxy.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -496,11 +691,17 @@
             const serviceSearch = document.getElementById('serviceSearch');
             const categoryFilter = document.getElementById('serviceCategoryFilter');
             const locationFilter = document.getElementById('serviceLocationFilter');
+            const serviceDetailPage = document.getElementById('serviceDetailPage');
+            const mainContainer = document.getElementById('mainContainer');
+            const backToList = document.getElementById('backToList');
+            const checkoutBtn = document.getElementById('checkoutBtn');
             
             // Service data
             let services = JSON.parse(localStorage.getItem('services')) || [];
             let isEditMode = false;
             let currentEditingId = null;
+            let currentService = null;
+            let cart = [];
             
             // Initialize the services panel
             function initServices() {
@@ -524,6 +725,24 @@
                 serviceSearch.addEventListener('input', filterServices);
                 categoryFilter.addEventListener('change', filterServices);
                 locationFilter.addEventListener('change', filterServices);
+                
+                // Navigation
+                backToList.addEventListener('click', function() {
+                    serviceDetailPage.style.display = 'none';
+                    mainContainer.style.display = 'block';
+                });
+                
+                // Checkout
+                checkoutBtn.addEventListener('click', function() {
+                    if (cart.length === 0) {
+                        alert('Your cart is empty!');
+                        return;
+                    }
+                    
+                    alert('Order placed successfully! Total: $' + calculateCartTotal().toFixed(2));
+                    cart = [];
+                    updateCart();
+                });
             }
             
             // Open modal for adding a new service
@@ -551,6 +770,7 @@
                     document.getElementById('serviceDescription').value = service.description || '';
                     document.getElementById('serviceHours').value = service.hours || '';
                     document.getElementById('serviceContact').value = service.contact || '';
+                    document.getElementById('serviceMenu').value = service.menu ? JSON.stringify(service.menu, null, 2) : '';
                 }
                 
                 serviceModal.style.display = 'flex';
@@ -565,6 +785,17 @@
             function handleFormSubmit(e) {
                 e.preventDefault();
                 
+                let menuItems = [];
+                try {
+                    const menuValue = document.getElementById('serviceMenu').value.trim();
+                    if (menuValue) {
+                        menuItems = JSON.parse(menuValue);
+                    }
+                } catch (error) {
+                    alert('Invalid JSON format for menu items');
+                    return;
+                }
+                
                 const serviceData = {
                     id: isEditMode ? currentEditingId : Date.now().toString(),
                     name: document.getElementById('serviceName').value.trim(),
@@ -573,6 +804,7 @@
                     description: document.getElementById('serviceDescription').value.trim(),
                     hours: document.getElementById('serviceHours').value.trim(),
                     contact: document.getElementById('serviceContact').value.trim(),
+                    menu: menuItems,
                     createdAt: new Date().toISOString()
                 };
                 
@@ -664,6 +896,10 @@
                                 </div>
                             ` : ''}
                         </div>
+                        ${service.menu && service.menu.length > 0 ? 
+                            `<div class="order-btn">Order Now</div>` : 
+                            `<div style="margin-top: 1rem; color: #777; text-align: center;">No online ordering</div>`
+                        }
                         <div class="service-actions">
                             <button class="action-btn edit-btn" title="Edit" data-id="${service.id}">
                                 <i class="fas fa-edit"></i>
@@ -674,23 +910,138 @@
                         </div>
                     `;
                     
+                    // Add click event to open service detail
+                    if (service.menu && service.menu.length > 0) {
+                        const orderBtn = serviceCard.querySelector('.order-btn');
+                        orderBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            openServiceDetail(service.id);
+                        });
+                    }
+                    
+                    serviceCard.addEventListener('click', function(e) {
+                        if (!e.target.closest('.action-btn')) {
+                            openServiceDetail(service.id);
+                        }
+                    });
+                    
                     servicesContainer.appendChild(serviceCard);
                 });
                 
                 // Add event listeners to action buttons
                 document.querySelectorAll('.edit-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
                         const serviceId = this.dataset.id;
                         openEditServiceModal(serviceId);
                     });
                 });
                 
                 document.querySelectorAll('.delete-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
                         const serviceId = this.dataset.id;
                         deleteService(serviceId);
                     });
                 });
+            }
+            
+            // Open service detail page
+            function openServiceDetail(serviceId) {
+                const service = services.find(s => s.id === serviceId);
+                if (!service) return;
+                
+                currentService = service;
+                cart = [];
+                
+                // Update service detail page
+                document.getElementById('detailServiceName').textContent = service.name;
+                document.getElementById('detailServiceCategory').textContent = getCategoryName(service.category);
+                document.getElementById('detailServiceLocation').textContent = getLocationName(service.location);
+                document.getElementById('detailServiceDescription').textContent = service.description || 'No description available.';
+                
+                if (service.hours) {
+                    document.getElementById('detailServiceHours').innerHTML = `<i class="far fa-clock"></i><span>${service.hours}</span>`;
+                } else {
+                    document.getElementById('detailServiceHours').innerHTML = '<i class="far fa-clock"></i><span>Hours: Not specified</span>';
+                }
+                
+                if (service.contact) {
+                    document.getElementById('detailServiceContact').innerHTML = `<i class="fas fa-phone-alt"></i><span>${service.contact}</span>`;
+                } else {
+                    document.getElementById('detailServiceContact').innerHTML = '<i class="fas fa-phone-alt"></i><span>Contact: Not specified</span>';
+                }
+                
+                // Render menu items
+                const menuContainer = document.getElementById('serviceMenuItems');
+                menuContainer.innerHTML = '';
+                
+                if (service.menu && service.menu.length > 0) {
+                    service.menu.forEach((item, index) => {
+                        const menuItem = document.createElement('div');
+                        menuItem.className = 'menu-item';
+                        menuItem.innerHTML = `
+                            <div>
+                                <strong>${item.name}</strong>
+                                <div>$${item.price.toFixed(2)}</div>
+                            </div>
+                            <button class="add-to-cart" data-index="${index}">Add to Cart</button>
+                        `;
+                        menuContainer.appendChild(menuItem);
+                    });
+                    
+                    // Add event listeners to add-to-cart buttons
+                    document.querySelectorAll('.add-to-cart').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const itemIndex = parseInt(this.dataset.index);
+                            addToCart(service.menu[itemIndex]);
+                        });
+                    });
+                } else {
+                    menuContainer.innerHTML = '<p>No menu items available for this service.</p>';
+                }
+                
+                // Update cart
+                updateCart();
+                
+                // Show detail page, hide main container
+                mainContainer.style.display = 'none';
+                serviceDetailPage.style.display = 'block';
+            }
+            
+            // Add item to cart
+            function addToCart(item) {
+                cart.push(item);
+                updateCart();
+            }
+            
+            // Update cart display
+            function updateCart() {
+                const cartContainer = document.getElementById('cartItems');
+                cartContainer.innerHTML = '';
+                
+                if (cart.length === 0) {
+                    cartContainer.innerHTML = '<p>Your cart is empty.</p>';
+                    document.getElementById('cartTotal').textContent = '$0.00';
+                    return;
+                }
+                
+                cart.forEach((item, index) => {
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item';
+                    cartItem.innerHTML = `
+                        <div>${item.name}</div>
+                        <div>$${item.price.toFixed(2)}</div>
+                    `;
+                    cartContainer.appendChild(cartItem);
+                });
+                
+                document.getElementById('cartTotal').textContent = '$' + calculateCartTotal().toFixed(2);
+            }
+            
+            // Calculate cart total
+            function calculateCartTotal() {
+                return cart.reduce((total, item) => total + item.price, 0);
             }
             
             // Filter services based on search and filters
